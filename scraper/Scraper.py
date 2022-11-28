@@ -47,11 +47,11 @@ def get_dog_info(driver, chip):
     driver.find_element(By.ID, 'locPetButton').click()
     time.sleep(const.DELAY_SEC/2)
     try:
-        table = driver.find_element(By.ID, '0print')
+        table = driver.find_element(By.CLASS_NAME, 'body_resulte')
     except NoSuchElementException:
         try:
             time.sleep(const.DELAY_SEC/2)
-            table = driver.find_element(By.ID, '0print')
+            table = driver.find_element(By.CLASS_NAME, 'body_resulte')
         except NoSuchElementException:
             return [chip] + [-1] * len(const.ELEMENT_LIST)
     chip_num = driver.find_element(By.ID, 'head_resulte').text
@@ -74,7 +74,7 @@ class Scraper(threading.Thread):
         This function opened the create new csv file with only header in the output location
         :return: None
         """
-        with open(self.output, 'w') as csvfile:
+        with open(self.output, 'w', newline='') as csvfile:
             writer_object = writer(csvfile)
             writer_object.writerow(['chip_number'] + const.ELEMENT_LIST)
 
@@ -90,8 +90,7 @@ class Scraper(threading.Thread):
 
         driver.get(const.URL)
         dog_info = get_dog_info(driver, chip_num)
-        with open(const.OUTPUT_FILE, 'a') as file:
+        with open(const.OUTPUT_FILE, 'a', newline='') as file:
             writer_object = writer(file)
             writer_object.writerow(dog_info)
             file.close()
-        print(chip_num)
