@@ -26,13 +26,12 @@ def main():
     parser.add_argument('-debug', metavar='debug_mode', default=False, type=str2bool,
                         help='option for running with or without debugging.')
 
-    parser.add_argument('-thredlimit', '-limit', metavar='debug_mode', default=-1, type=int,
-                        help='option for running with or without debugging.')
+    parser.add_argument('-thredlimit', '-limit', metavar='thred_limits', default=-1, type=int,
+                        help='limiting number of threads opened.')
 
     args = parser.parse_args()
 
     chrome_options = Options()
-
     if args.debug:
         chrome_options.add_argument("--headless")
     if args.thredlimit != -1:
@@ -44,7 +43,8 @@ def main():
                        'new_file': True}
     scraper = Scraper(thread_limiter, const.OUTPUT_FILE, scraper_options)
     start = 900032001799568
-    for chip_num in tqdm(range(start, start + 1)):
+    number_queries = 100
+    for chip_num in range(start, start + number_queries):
         tread = threading.Thread(target=scraper.run, args=[chip_num])
         tread.start()
 
