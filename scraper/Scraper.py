@@ -11,6 +11,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from . import const
 
+driver_location = ChromeDriverManager().install()
 
 def get_driver(chrome_options) -> webdriver.chrome.webdriver.WebDriver:
     """
@@ -18,7 +19,8 @@ def get_driver(chrome_options) -> webdriver.chrome.webdriver.WebDriver:
     :param chrome_options:
     :return:
     """
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+    driver = webdriver.Chrome(options=chrome_options,
+                              executable_path=driver_location)
     driver.get(const.URL)
 
     lan_div = driver.find_element(By.ID, 'LangDD')
